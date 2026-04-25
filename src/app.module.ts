@@ -5,17 +5,16 @@ import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { PgDatabaseModule } from './database/pg.database';
 
-
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: [".env", ".env.local"],
-    }),
-    PgDatabaseModule,
-    UserModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: ['.env', '.env.local'],
+        }),
+        PgDatabaseModule,
+        UserModule,
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}
