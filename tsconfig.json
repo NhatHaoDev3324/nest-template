@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolvePackageJsonExports": true,
+
+    "target": "ES2022",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "incremental": true,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "types": ["node", "jest"],
+
+    "paths": {
+      "*": ["./*"]
+    },
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "strict": true,
+    "strictNullChecks": true,
+
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+
+    "removeComments": true
+  }
+}
