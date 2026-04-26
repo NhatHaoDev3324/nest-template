@@ -3,16 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { PgDatabaseModule } from './database/pg.database';
+import { ProductModule } from './modules/product/product.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { postgresConfig } from './config/database.config';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: ['.env', '.env.local'],
+            envFilePath: ['.env.local', '.env'],
         }),
-        PgDatabaseModule,
+        TypeOrmModule.forRootAsync(postgresConfig()),
         UserModule,
+        ProductModule,
     ],
     controllers: [AppController],
     providers: [AppService],
