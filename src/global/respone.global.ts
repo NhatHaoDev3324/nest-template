@@ -10,6 +10,33 @@ export class ResponseData<D> {
 
         return this;
     }
+
+    toJSON() {
+        return {
+            statusCode: this.statusCode,
+            message: this.message,
+            data: this.data ?? null,
+        };
+    }
+}
+
+export class ResponseSuccessNoData {
+    statusCode: number;
+    message: string;
+
+    constructor(statusCode: number, message: string) {
+        this.statusCode = statusCode;
+        this.message = message;
+
+        return this;
+    }
+
+    toJSON() {
+        return {
+            statusCode: this.statusCode,
+            message: this.message,
+        };
+    }
 }
 
 export class ResponseError {
@@ -21,5 +48,12 @@ export class ResponseError {
         this.message = message;
 
         return this;
+    }
+
+    toJSON() {
+        return {
+            statusCode: this.statusCode,
+            message: this.message,
+        };
     }
 }

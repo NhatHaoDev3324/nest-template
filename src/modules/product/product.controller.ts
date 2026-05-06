@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { ResponseData, ResponseError } from 'src/global/respone.global';
+import { ResponseData, ResponseError } from '../../global/respone.global';
 
 @Controller('product')
 export class ProductController {
@@ -18,22 +18,14 @@ export class ProductController {
     @Get()
     async findAll(): Promise<ResponseData<Product[]>> {
         const products = await this.productService.findAll();
-        return new ResponseData<Product[]>(
-            HttpStatus.OK,
-            'Lấy danh sách sản phẩm thành công',
-            products,
-        );
+        return new ResponseData<Product[]>(HttpStatus.OK, 'Lấy danh sách sản phẩm thành công', products);
     }
 
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<ResponseData<Product> | ResponseError> {
         try {
             const product = await this.productService.findOne(id);
-            return new ResponseData<Product>(
-                HttpStatus.OK,
-                'Lấy thông tin sản phẩm thành công',
-                product,
-            );
+            return new ResponseData<Product>(HttpStatus.OK, 'Lấy thông tin sản phẩm thành công', product);
         } catch (error) {
             const err = error instanceof Error ? error.message : 'Lỗi không xác định';
             return new ResponseError(HttpStatus.NOT_FOUND, err);
@@ -41,10 +33,7 @@ export class ProductController {
     }
 
     @Patch(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateProductDto: UpdateProductDto,
-    ): Promise<ResponseData<void>> {
+    async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<ResponseData<void>> {
         await this.productService.update(id, updateProductDto);
         return new ResponseData<void>(HttpStatus.OK, 'Cập nhật sản phẩm thành công', undefined);
     }
