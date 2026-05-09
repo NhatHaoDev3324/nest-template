@@ -1,16 +1,27 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginAuthDto } from './dto/login-auth.dto';
-import { ResponseToken } from '../../global/respone.global';
+import { ResponseData, ResponseToken } from '../../global/respone.global';
+import { LocalAuthGuard } from './passport/local-auth.guard';
+import { User } from '../user/entity/user.entity';
+import { JwtAuthGuard } from './passport/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    @UseGuards(LocalAuthGuard)
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    async signIn(@Body() login: LoginAuthDto): Promise<ResponseToken> {
-        const token = await this.authService.signIn(login.email, login.password);
+    async login(@Request() req: { user: User }): Promise<ResponseToken> {
+        const token = await this.authService.login(req.user);
         return new ResponseToken(HttpStatus.OK, 'Đăng nhập thành công', token);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    @Get('profile')
+    async getProfile(@Request() req: { user: { id: string } }): Promise<ResponseData<{ email: string; name: string; created_at: Date }>> {
+        const user = await this.authService.profile(req.user.id);
+        return new ResponseData(HttpStatus.OK, 'Lấy thông tin thành công', user);
     }
 }

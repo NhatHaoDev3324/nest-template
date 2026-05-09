@@ -13,17 +13,36 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async signIn(email: string, password: string): Promise<string> {
+    async validateUser(email: string, password: string): Promise<User> {
         const user = await this.userRepository.findOneBy({ email });
         if (!user) {
             throw new UnauthorizedException('Email không tồn tại');
         }
         const isValidatePass = await comparePassword(password, user.password);
         if (!isValidatePass) {
-            throw new UnauthorizedException('Mật khẩu sai');
+            throw new UnauthorizedException('Mật khẩu không chính xác');
         }
-        const payload = { sub: user.id };
+        return user;
+    }
+
+    async login(user: User): Promise<string> {
+        const payload = { id: user.id };
         const token = await this.jwtService.signAsync(payload);
         return token;
+    }
+
+    async profile(id: string): Promise<{
+        email: string;
+        name: string;
+        created_at: Date;
+    }> {
+        const user = await this.userRepository.findOne({
+            where: { id },
+            select: ['email', 'name', 'created_at'],
+        });
+        if (!user) {
+            throw new UnauthorizedException('id không tồn tại');
+        }
+        return user;
     }
 }

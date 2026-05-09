@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('products')
 export class Product {
@@ -19,7 +19,4 @@ export class Product {
 
     @UpdateDateColumn()
     updated_at!: Date;
-
-    @DeleteDateColumn()
-    deleted_at!: Date;
 }
