@@ -1,24 +1,29 @@
-import { Dependencies, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from 'utils/bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../user/entity/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
     constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
         private jwtService: JwtService,
-        private userService: UserService,
     ) {}
 
-    async signIn(email: string, password: string): Promise<any> {
-        const user = await this.userService.getUserByEmail(email);
+    async signIn(email: string, password: string): Promise<string> {
+        const user = await this.userRepository.findOneBy({ email });
+        if (!user) {
+            throw new UnauthorizedException('Email không tồn tại');
+        }
         const isValidatePass = await comparePassword(password, user.password);
         if (!isValidatePass) {
             throw new UnauthorizedException('Mật khẩu sai');
         }
         const payload = { sub: user.id };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        const token = await this.jwtService.signAsync(payload);
+        return token;
     }
 }

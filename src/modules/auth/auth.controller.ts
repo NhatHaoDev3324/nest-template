@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
+import { ResponseToken } from '../../global/respone.global';
 
 @Controller('auth')
 export class AuthController {
@@ -8,7 +9,8 @@ export class AuthController {
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() login: LoginAuthDto) {
-        return this.authService.signIn(login.email, login.password);
+    async signIn(@Body() login: LoginAuthDto): Promise<ResponseToken> {
+        const token = await this.authService.signIn(login.email, login.password);
+        return new ResponseToken(HttpStatus.OK, 'Đăng nhập thành công', token);
     }
 }

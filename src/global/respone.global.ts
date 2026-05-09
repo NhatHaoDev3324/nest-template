@@ -20,13 +20,15 @@ export class ResponseData<D> {
     }
 }
 
-export class ResponseSuccessNoData {
+export class ResponseToken {
     statusCode: number;
     message: string;
+    token: string;
 
-    constructor(statusCode: number, message: string) {
+    constructor(statusCode: number, message: string, token: string) {
         this.statusCode = statusCode;
         this.message = message;
+        this.token = token;
 
         return this;
     }
@@ -35,11 +37,12 @@ export class ResponseSuccessNoData {
         return {
             statusCode: this.statusCode,
             message: this.message,
+            token: this.token,
         };
     }
 }
 
-export class ResponseError {
+export class ResponseSuccessNoData {
     statusCode: number;
     message: string;
 

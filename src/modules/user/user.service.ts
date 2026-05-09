@@ -83,16 +83,4 @@ export class UserService {
             throw new InternalServerErrorException('Không thể xóa tài khoản');
         }
     }
-
-    async getUserByEmail(email: string): Promise<User> {
-        try {
-            const user = await this.userRepository.findOneBy({ email });
-            if (!user) {
-                throw new BadRequestException('Người dùng không tồn tại');
-            }
-            return user;
-        } catch {
-            throw new InternalServerErrorException('Không thể lấy thông tin người dùng');
-        }
-    }
 }

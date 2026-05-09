@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entity/user.entity';
-import { ResponseData, ResponseError, ResponseSuccessNoData } from '../../global/respone.global';
+import { ResponseData, ResponseSuccessNoData } from '../../global/respone.global';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

@@ -13,6 +13,6 @@ export const postgresConfig = (): TypeOrmModuleAsyncOptions => ({
         database: configService.get<string>('DB_NAME'),
         entities: [__dirname + '/../**/*.entity.{ts,js}'],
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
     }),
 });

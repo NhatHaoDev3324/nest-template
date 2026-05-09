@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { ResponseData, ResponseError } from '../../global/respone.global';
+import { ResponseData, ResponseSuccessNoData } from '../../global/respone.global';
 
 @Controller('product')
 export class ProductController {
@@ -22,25 +22,20 @@ export class ProductController {
     }
 
     @Get(':id')
-    async findOne(@Param('id') id: string): Promise<ResponseData<Product> | ResponseError> {
-        try {
-            const product = await this.productService.findOne(id);
-            return new ResponseData<Product>(HttpStatus.OK, 'Lấy thông tin sản phẩm thành công', product);
-        } catch (error) {
-            const err = error instanceof Error ? error.message : 'Lỗi không xác định';
-            return new ResponseError(HttpStatus.NOT_FOUND, err);
-        }
+    async findOne(@Param('id') id: string): Promise<ResponseData<Product>> {
+        const product = await this.productService.findOne(id);
+        return new ResponseData<Product>(HttpStatus.OK, 'Lấy thông tin sản phẩm thành công', product);
     }
 
     @Patch(':id')
-    async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<ResponseData<void>> {
+    async update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<ResponseSuccessNoData> {
         await this.productService.update(id, updateProductDto);
-        return new ResponseData<void>(HttpStatus.OK, 'Cập nhật sản phẩm thành công', undefined);
+        return new ResponseSuccessNoData(HttpStatus.OK, 'Cập nhật sản phẩm thành công');
     }
 
     @Delete(':id')
-    async remove(@Param('id') id: string): Promise<ResponseData<void>> {
+    async remove(@Param('id') id: string): Promise<ResponseSuccessNoData> {
         await this.productService.remove(id);
-        return new ResponseData<void>(HttpStatus.OK, 'Xóa sản phẩm thành công', undefined);
+        return new ResponseSuccessNoData(HttpStatus.OK, 'Xóa sản phẩm thành công');
     }
 }
